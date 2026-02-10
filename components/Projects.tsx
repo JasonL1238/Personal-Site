@@ -6,22 +6,22 @@ const projects = [
   {
     title: 'Zebrafish Behavior Analysis',
     problem: 'Understanding how computational methods can extract meaningful patterns from animal behavior data',
-    approach: 'Developed computer vision pipelines using Python, OpenCV, and YOLO to analyze video data of zebrafish behavior, working closely with neuroscience researchers to identify which behaviors matter and how to quantify them',
-    outcome: 'Created tools that enable researchers to ask questions about behavior that weren\'t feasible with manual analysis, demonstrating how computer vision can support biological research',
+    approach: 'I developed computer vision pipelines using Python, OpenCV, and YOLO to analyze video data of zebrafish behavior, working closely with neuroscience researchers to identify which behaviors matter and how to quantify them',
+    outcome: 'The tools I built enable researchers to ask questions about behavior that weren\'t feasible with manual analysis, showing how computer vision can support biological research',
     domain: 'Biomedical AI',
   },
   {
     title: 'Social Media Data Analysis',
     problem: 'Extracting insights from large-scale text data using transformer models',
-    approach: 'Developed NLP models to analyze social media datasets, focusing on how transformer architectures can identify patterns in complex, noisy text data',
-    outcome: 'Contributed to research published in IEEE, showing how modern NLP methods can be applied to understand large-scale social phenomena',
+    approach: 'I developed NLP models to analyze social media datasets, focusing on how transformer architectures can identify patterns in complex, noisy text data',
+    outcome: 'This work contributed to research published in IEEE, showing how modern NLP methods can be applied to understand large-scale social phenomena',
     domain: 'NLP Research',
   },
   {
     title: 'UAV Perception Systems',
     problem: 'Building reliable perception for autonomous aerial systems',
-    approach: 'Developed computer vision and perception pipelines using ROS2 and PX4, integrating sensor data to enable autonomous navigation in real environments',
-    outcome: 'Created systems that demonstrate how perception, planning, and control can work together in physical systems, with applications to autonomous robotics',
+    approach: 'I developed computer vision and perception pipelines using ROS2 and PX4, integrating sensor data to enable autonomous navigation in real environments',
+    outcome: 'The systems I built demonstrate how perception, planning, and control can work together in physical systems, with applications to autonomous robotics',
     domain: 'Robotics & Autonomy',
   },
 ]

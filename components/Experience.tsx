@@ -11,22 +11,23 @@ const experienceGroups = [
         context: 'Biomedical AI Research',
         organization: 'Campbell Lab, University of Pennsylvania',
         location: 'Philadelphia, PA',
-        date: '2024 - Present',
-        content: 'I work on computer vision models for analyzing zebrafish behavior, using Python, OpenCV, and YOLO to process video data and identify patterns. The challenge isn\'t just building accurate models—it\'s understanding what behaviors matter to neuroscientists and how computational methods can answer questions that traditional analysis can\'t. This work has taught me how to bridge the gap between technical implementation and biological understanding, often working with messy, real-world data that requires careful preprocessing and domain expertise.'
+        date: '2025 - Present',
+        content: 'I work on computer vision models for analyzing zebrafish behavior, using Python, OpenCV, and YOLO to process video data and identify patterns. The challenge isn\'t just building accurate models. It\'s understanding what behaviors matter to neuroscientists and how computational methods can answer questions that traditional analysis can\'t. Real data is messy, which is part of what makes it interesting. This work has taught me how to bridge the gap between technical implementation and biological understanding, often working with datasets that require careful preprocessing and domain expertise.'
       },
       {
         context: 'NLP Research Intern',
         organization: 'BlastAI',
         location: 'Remote',
-        date: 'Summer 2024',
-        content: 'I developed transformer models for analyzing large-scale social media data, focusing on extracting meaningful patterns from complex text datasets. This project resulted in an IEEE paper and gave me experience working with state-of-the-art NLP methods while thinking critically about how these models can be applied to real-world problems. The work required balancing technical innovation with practical constraints, and it reinforced my interest in applying AI to domains where the data is inherently complex and meaningful.'
+        date: 'Summer 2023',
+        content: 'I developed transformer models for analyzing large-scale social media data, focusing on extracting meaningful patterns from complex text datasets. This project resulted in a paper published at the Second International Conference on Informatics (ICI-2023) and gave me experience working with state-of-the-art NLP methods while thinking critically about how these models can be applied to real-world problems. The work required balancing technical innovation with practical constraints, and it reinforced my interest in applying AI to domains where the data is inherently complex and meaningful.',
+        link: 'https://arxiv.org/abs/2310.05964'
       },
       {
         context: 'Bioinformatics & Data Analysis Intern',
         organization: 'NextGen Jane',
         location: 'Remote',
-        date: 'Summer 2023',
-        content: 'I worked with large patient datasets, performing statistical analysis and building Shiny visualizations to help researchers understand patterns in health data. This experience taught me how to think about data quality, statistical rigor, and visualization design—all while working with datasets where the stakes are high and the questions are complex. The work required close collaboration with domain experts to ensure that the analysis and visualizations actually supported research goals.'
+        date: '2023 - 2024',
+        content: 'I worked with large patient datasets, performing statistical analysis and building Shiny visualizations to help researchers understand patterns in health data. This experience taught me how to think about data quality, statistical rigor, and visualization design, all while working with datasets where the stakes are high and the questions are complex. The work required close collaboration with domain experts to ensure that the analysis and visualizations actually supported research goals.'
       }
     ]
   },
@@ -38,8 +39,8 @@ const experienceGroups = [
         context: 'Perception Systems Engineer',
         organization: 'Penn Aerial Robotics',
         location: 'Philadelphia, PA',
-        date: '2023 - Present',
-        content: 'I work on perception systems for UAVs using PX4 and ROS2, developing computer vision pipelines that enable autonomous navigation. The challenge is building systems that work reliably in real environments—not just in simulation. This has taught me systems thinking, how to debug complex autonomy stacks, and how to balance theoretical approaches with practical constraints. The work requires understanding everything from low-level sensor data to high-level planning, and it\'s given me deep experience in how software interfaces with physical systems.'
+        date: '2025 - Present',
+        content: 'I work on perception systems for UAVs using PX4 and ROS2, developing computer vision pipelines that enable autonomous navigation. The challenge is building systems that work reliably in real environments, not just in simulation. This has taught me systems thinking, how to debug complex autonomy stacks, and how to balance theoretical approaches with practical constraints. The work requires understanding everything from low-level sensor data to high-level planning, and it\'s given me experience in how software interfaces with physical systems.'
       }
     ]
   },
@@ -98,6 +99,16 @@ export default function Experience() {
                   <p className="text-xs text-gray-500 font-light">{item.location} • {item.date}</p>
                 </div>
                 <p className="text-sm text-gray-400 leading-relaxed font-light">{item.content}</p>
+                {item.link && (
+                  <a
+                    href={item.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block mt-3 text-xs text-blue-400 hover:text-blue-300 transition-colors duration-200"
+                  >
+                    View paper →
+                  </a>
+                )}
               </motion.div>
             ))}
           </div>
