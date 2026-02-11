@@ -31,7 +31,7 @@ export default function Projects() {
     <section id="projects" className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-gray-800 via-gray-900 to-gray-800">
       <div className="max-w-7xl mx-auto">
         <motion.h2
-          className="text-3xl md:text-4xl font-light mb-4 text-center text-white tracking-tight"
+          className="text-3xl md:text-4xl font-light mb-12 text-center text-white tracking-tight"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -39,15 +39,6 @@ export default function Projects() {
         >
           Projects
         </motion.h2>
-        <motion.p
-          className="text-sm text-gray-500 text-center mb-12 max-w-2xl mx-auto font-light"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.1 }}
-        >
-          Projects that show how computational methods can be applied to biological systems, robotics, and data analysis
-        </motion.p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {projects.map((project, index) => (

@@ -1,6 +1,8 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { useRef, useState, useEffect, useCallback } from 'react'
 
 const experienceGroups = [
   {
@@ -67,6 +69,42 @@ export default function Experience() {
     }))
   )
 
+  const scrollContainerRef = useRef<HTMLDivElement>(null)
+  const contentRef = useRef<HTMLDivElement>(null)
+  const [scrollPosition, setScrollPosition] = useState(0)
+  const [canScrollLeft, setCanScrollLeft] = useState(false)
+  const [canScrollRight, setCanScrollRight] = useState(true)
+
+  const checkScrollability = useCallback(() => {
+    if (!scrollContainerRef.current || !contentRef.current) return
+    const containerWidth = scrollContainerRef.current.clientWidth
+    const contentWidth = contentRef.current.scrollWidth
+    setCanScrollLeft(scrollPosition > 0)
+    setCanScrollRight(scrollPosition < contentWidth - containerWidth - 10)
+  }, [scrollPosition])
+
+  useEffect(() => {
+    checkScrollability()
+    window.addEventListener('resize', checkScrollability)
+    return () => {
+      window.removeEventListener('resize', checkScrollability)
+    }
+  }, [checkScrollability])
+
+  const scroll = (direction: 'left' | 'right') => {
+    if (!scrollContainerRef.current || !contentRef.current) return
+    const scrollAmount = 500
+    const containerWidth = scrollContainerRef.current.clientWidth
+    const contentWidth = contentRef.current.scrollWidth
+    const maxScroll = contentWidth - containerWidth
+    
+    const newPosition = direction === 'left' 
+      ? Math.max(0, scrollPosition - scrollAmount)
+      : Math.min(maxScroll, scrollPosition + scrollAmount)
+    
+    setScrollPosition(newPosition)
+  }
+
   return (
     <section id="experience" className="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-gray-800 via-gray-800/90 to-gray-800">
       <div className="max-w-7xl mx-auto">
@@ -80,37 +118,72 @@ export default function Experience() {
           Experience
         </motion.h2>
 
-        <div className="overflow-x-auto pb-4">
-          <div className="flex gap-6" style={{ minWidth: 'max-content' }}>
-            {allExperiences.map((item, index) => (
-              <motion.div
-                key={`${item.category}-${index}`}
-                className="bg-gray-900/50 border-l-2 border-gray-700 pl-6 py-5 hover:border-gray-600 transition-colors duration-200 flex-shrink-0"
-                style={{ width: '100%', minWidth: '400px', maxWidth: '500px' }}
-                initial={{ opacity: 0, x: 20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: index * 0.1 }}
-              >
-                <div className="mb-3">
-                  <p className="text-xs text-gray-500 font-light uppercase tracking-wide mb-1">{item.category}</p>
-                  <h4 className="text-base font-medium text-white mb-1 tracking-tight">{item.context}</h4>
-                  <p className="text-xs text-gray-500 font-light">{item.organization}</p>
-                  <p className="text-xs text-gray-500 font-light">{item.location} • {item.date}</p>
-                </div>
-                <p className="text-sm text-gray-400 leading-relaxed font-light">{item.content}</p>
-                {item.link && (
-                  <a
-                    href={item.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-block mt-3 text-xs text-blue-400 hover:text-blue-300 transition-colors duration-200"
-                  >
-                    View paper →
-                  </a>
-                )}
-              </motion.div>
-            ))}
+        <div className="relative">
+          {/* Left Arrow */}
+          {canScrollLeft && (
+            <button
+              onClick={() => scroll('left')}
+              className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-gray-900/80 hover:bg-gray-900 border border-gray-700 rounded-full p-2 text-gray-300 hover:text-white transition-colors duration-200"
+              aria-label="Scroll left"
+            >
+              <ChevronLeft size={24} />
+            </button>
+          )}
+
+          {/* Right Arrow */}
+          {canScrollRight && (
+            <button
+              onClick={() => scroll('right')}
+              className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-gray-900/80 hover:bg-gray-900 border border-gray-700 rounded-full p-2 text-gray-300 hover:text-white transition-colors duration-200"
+              aria-label="Scroll right"
+            >
+              <ChevronRight size={24} />
+            </button>
+          )}
+
+          <div 
+            ref={scrollContainerRef}
+            className="overflow-x-hidden pb-4"
+            style={{ position: 'relative' }}
+          >
+            <div 
+              ref={contentRef}
+              className="flex gap-6 transition-transform duration-300 ease-out"
+              style={{ 
+                minWidth: 'max-content',
+                transform: `translateX(-${scrollPosition}px)`
+              }}
+            >
+              {allExperiences.map((item, index) => (
+                <motion.div
+                  key={`${item.category}-${index}`}
+                  className="bg-gray-900/50 border-l-2 border-gray-700 pl-6 py-5 hover:border-gray-600 transition-colors duration-200 flex-shrink-0"
+                  style={{ width: '100%', minWidth: '400px', maxWidth: '500px' }}
+                  initial={{ opacity: 0, x: 20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: index * 0.1 }}
+                >
+                  <div className="mb-3">
+                    <p className="text-xs text-gray-500 font-light uppercase tracking-wide mb-1">{item.category}</p>
+                    <h4 className="text-base font-medium text-white mb-1 tracking-tight">{item.context}</h4>
+                    <p className="text-xs text-gray-500 font-light">{item.organization}</p>
+                    <p className="text-xs text-gray-500 font-light">{item.location} • {item.date}</p>
+                  </div>
+                  <p className="text-sm text-gray-400 leading-relaxed font-light">{item.content}</p>
+                  {item.link && (
+                    <a
+                      href={item.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-block mt-3 text-xs text-blue-400 hover:text-blue-300 transition-colors duration-200"
+                    >
+                      View paper →
+                    </a>
+                  )}
+                </motion.div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
