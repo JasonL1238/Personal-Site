@@ -50,7 +50,7 @@ export default function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
             >
-              Computer Science and Mathematics at University of Pennsylvania. Building at the intersection of health, biology, and data-driven finance.
+              Computer Science and Mathematics at University of Pennsylvania. Building at the intersection of health, biology, data-driven finance, and robotics.
             </motion.p>
 
             <motion.div
