@@ -17,7 +17,6 @@ const ITEMS: { sym: string; delta: string; up: boolean }[] = [
   { sym: 'SQL', delta: '+1.2', up: true },
   { sym: 'COFFEE', delta: '+9.9', up: true },
   { sym: 'SLEEP', delta: '-3.2', up: false },
-  { sym: 'BULLS', delta: '-12.6', up: false },
 ]
 
 export default function Ticker() {

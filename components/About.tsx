@@ -46,7 +46,7 @@ export default function About() {
           </dl>
           <p className="mt-5 border-t border-line pt-3 text-sm text-muted">
             Outside the terminal: poker, Penn Club Tennis, running, cooking,
-            pickup basketball, and the Bulls.
+            and basketball.
           </p>
         </motion.div>
 
