@@ -2,87 +2,135 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  body {
-    @apply bg-gray-900 text-gray-100 antialiased;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-      sans-serif;
-    overflow-x: hidden;
-    font-weight: 300;
-  }
-  
-  * {
-    box-sizing: border-box;
-  }
-  
-  html, body {
-    max-width: 100vw;
-    overflow-x: hidden;
-  }
-  
-  h1, h2, h3, h4, h5, h6 {
-    font-weight: 300;
-    letter-spacing: -0.02em;
-  }
+/* Color channels (RGB) so Tailwind opacity modifiers work */
+:root {
+  --paper: 250 246 239;
+  --paper-raised: 255 255 255;
+  --ink: 23 19 12;
+  --muted: 110 101 87;
+  --line: 227 218 199;
+  --accent: 43 80 224;
+  --accent-soft: rgba(43, 80, 224, 0.08);
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
-  
-  .perspective-1000 {
-    perspective: 1000px;
-  }
+:root[data-mode='markets'] {
+  --accent: 14 124 91;
+  --accent-soft: rgba(14, 124, 91, 0.08);
 }
 
-/* Smooth scrolling */
+:root[data-mode='safety'] {
+  --accent: 43 80 224;
+  --accent-soft: rgba(43, 80, 224, 0.08);
+}
+
+/* Text-safe orange: the vivid canvas orange fails AA on cream */
+:root[data-mode='robotics'] {
+  --accent: 201 58 8;
+  --accent-soft: rgba(201, 58, 8, 0.08);
+}
+
 html {
   scroll-behavior: smooth;
+  /* fixed nav is two rows on phones, one row from sm up */
+  scroll-padding-top: 6.5rem;
 }
 
-/* Hide scrollbar for horizontal scroll */
-.scrollbar-hide {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
-}
-
-/* Smooth section transitions */
-section {
-  transition: opacity 0.6s ease, transform 0.6s ease;
-}
-
-/* 3D transform support */
-.preserve-3d {
-  transform-style: preserve-3d;
-}
-
-/* Interactive card glow effect */
-@keyframes gentle-glow {
-  0%, 100% {
-    opacity: 0.3;
-  }
-  50% {
-    opacity: 0.5;
+@media (min-width: 640px) {
+  html {
+    scroll-padding-top: 5rem;
   }
 }
 
-.gentle-glow {
-  animation: gentle-glow 3s ease-in-out infinite;
+body {
+  background-color: rgb(var(--paper));
+  color: rgb(var(--ink));
 }
 
-/* Reduce motion for accessibility */
+/* Keep the ambient hero simulation visible without letting its linework
+   compete with recruiter-facing copy. */
+.hero-canvas-wash {
+  background: rgb(var(--paper) / 0.55);
+}
+
+@media (min-width: 640px) {
+  .hero-canvas-wash {
+    background: linear-gradient(
+      90deg,
+      rgb(var(--paper) / 0.84) 0%,
+      rgb(var(--paper) / 0.72) 58%,
+      transparent 84%
+    );
+  }
+}
+
+::selection {
+  background: rgb(var(--accent));
+  color: rgb(var(--paper));
+}
+
+/* Subtle paper grain (kept below the nav at z-30) */
+.grain::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 30;
+  opacity: 0.35;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.04 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Ticker marquee */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.marquee-track {
+  animation: marquee 45s linear infinite;
+}
+
+.ticker:hover .marquee-track,
+.marquee.paused .marquee-track {
+  animation-play-state: paused;
+}
+
+/* Hero headline swap */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.24s ease-out both;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+  .marquee-track {
+    animation: none;
   }
+  .animate-fade-up {
+    animation: none;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* Accent underline link */
+.link-accent {
+  background-image: linear-gradient(rgb(var(--accent)), rgb(var(--accent)));
+  background-size: 100% 1px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: color 0.2s ease;
+}
+
+.link-accent:hover {
+  color: rgb(var(--accent));
 }

@@ -1,102 +1,126 @@
 'use client'
 
-import { motion } from 'framer-motion'
-import { ChevronDown } from 'lucide-react'
-import Image from 'next/image'
+import { useLayoutEffect, useState } from 'react'
+import SystemCanvas, { Mode } from './SystemCanvas'
+
+// Single source of truth for the mode system. The vivid canvas colors may
+// differ from the CSS --accent (which is darkened for AA text contrast).
+export const MODES: {
+  key: Mode
+  label: string
+  index: string
+  line: string
+  canvasAccent: string
+}[] = [
+  {
+    key: 'safety',
+    label: 'ai safety',
+    index: '01',
+    line: 'evals that catch AI failures early.',
+    canvasAccent: '#2b50e0',
+  },
+  {
+    key: 'markets',
+    label: 'markets',
+    index: '02',
+    line: 'models for markets and games of skill.',
+    canvasAccent: '#0e7c5b',
+  },
+  {
+    key: 'robotics',
+    label: 'robotics',
+    index: '03',
+    line: 'perception code for robots that fly.',
+    canvasAccent: '#e8490f',
+  },
+]
+
+export const DEFAULT_MODE: Mode = 'safety'
 
 export default function Hero() {
+  const [mode, setMode] = useState<Mode>(DEFAULT_MODE)
+
+  // Layout effect so the CSS accent flips before paint, in the same frame
+  // as the canvas accent prop.
+  useLayoutEffect(() => {
+    document.documentElement.dataset.mode = mode
+  }, [mode])
+
+  const active = MODES.find((m) => m.key === mode)!
+
   return (
-    <section className="h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-gray-950 via-gray-900 to-gray-800 relative">
-      <div className="max-w-6xl mx-auto w-full">
-        <div className="flex flex-col lg:flex-row items-center lg:items-center justify-center gap-8 lg:gap-12">
-          {/* Left Column: Profile Picture */}
-          <motion.div
-            className="flex-shrink-0 order-2 lg:order-1"
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <div className="w-48 md:w-56 lg:w-60 aspect-[3/4] rounded-lg overflow-hidden">
-              <Image
-                src="/ProfilePic.jpg"
-                alt="Jason Li"
-                width={240}
-                height={320}
-                className="w-full h-full object-cover"
-                priority
-              />
-            </div>
-          </motion.div>
+    <section
+      id="top"
+      className="relative flex min-h-[72svh] flex-col overflow-hidden border-b border-line"
+    >
+      <SystemCanvas mode={mode} accent={active.canvasAccent} />
+      <div
+        aria-hidden="true"
+        className="hero-canvas-wash pointer-events-none absolute inset-0 z-[1]"
+      />
 
-          {/* Right Column: Text Content */}
-          <motion.div
-            className="flex-1 text-center lg:text-left order-1 lg:order-2 max-w-2xl"
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-          >
-            <motion.h1
-              className="text-5xl md:text-6xl lg:text-7xl font-light mb-6 text-white tracking-tight"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-            >
-              Jason Li
-            </motion.h1>
+      <div className="relative z-10 mx-auto flex w-full max-w-6xl flex-1 flex-col justify-center px-6 pb-8 pt-24 sm:pb-10 sm:pt-20 lg:px-8">
+        <p className="order-1 font-mono text-xs font-medium uppercase tracking-[0.25em] text-ink sm:text-sm">
+          Jason Li · CS + Math @ Penn · est. Chicago
+        </p>
 
-            <motion.p
-              className="text-lg md:text-xl text-gray-400 mb-12 font-light leading-relaxed"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-            >
-              Computer Science and Mathematics at University of Pennsylvania. Building at the intersection of health, biology, data-driven finance, and robotics.
-            </motion.p>
-
-            <motion.div
-              className="flex flex-wrap gap-4 justify-center lg:justify-start"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-            >
-              <a
-                href="#experience"
-                className="px-8 py-3 bg-white text-gray-900 rounded-sm font-medium text-sm tracking-wide hover:bg-gray-100 transition-colors duration-200"
+        {/* All three headline variants are stacked invisibly in one grid
+            cell so the h1 always reserves the tallest variant's height —
+            no layout shift when the mode (or viewport) changes. */}
+        <h1 className="order-2 mt-4 max-w-4xl font-display text-5xl leading-[1.05] sm:text-7xl lg:text-8xl">
+          <span className="grid" aria-live="polite">
+            {MODES.map((m) => (
+              <span
+                key={m.key}
+                aria-hidden="true"
+                className="invisible [grid-area:1/1]"
               >
-                View Work
-              </a>
-              <a
-                href="#contact"
-                className="px-8 py-3 bg-transparent text-gray-300 border border-gray-600 rounded-sm font-medium text-sm tracking-wide hover:border-gray-500 hover:text-white transition-colors duration-200"
-              >
-                Contact
-              </a>
-            </motion.div>
-          </motion.div>
+                I build <em className="italic">{m.line}</em>
+              </span>
+            ))}
+            <span key={mode} className="animate-fade-up [grid-area:1/1]">
+              I build <em className="italic text-accent">{active.line}</em>
+            </span>
+          </span>
+        </h1>
+
+        {/* On mobile the chips come right after the headline so the
+            signature interaction is visible in the first viewport. */}
+        <div className="order-3 mt-5 flex flex-wrap items-center gap-2 sm:order-4 sm:mt-5 sm:gap-3">
+          {MODES.map((m) => (
+            <button
+              key={m.key}
+              onClick={() => setMode(m.key)}
+              aria-pressed={mode === m.key}
+              className={`flex items-center gap-2 rounded-full border px-3 py-1.5 font-mono text-[11px] uppercase tracking-wider transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 sm:px-4 sm:py-2 sm:text-xs ${
+                mode === m.key
+                  ? 'border-accent bg-accent text-paper'
+                  : 'border-line bg-paper text-muted hover:border-accent hover:text-accent'
+              }`}
+            >
+              <span className="opacity-60">{m.index}</span>
+              {m.label}
+            </button>
+          ))}
+          <span className="ml-1 hidden font-mono text-[11px] text-muted sm:inline">
+            ← pick a system, move your cursor
+          </span>
+          <span className="w-full font-mono text-[11px] text-muted sm:hidden">
+            ↑ tap a system — the canvas steers itself
+          </span>
         </div>
+
+        <p className="order-4 mt-5 max-w-xl text-base leading-relaxed text-muted sm:order-3 sm:mt-5 sm:text-lg">
+          Engineering student at Penn, currently shipping computer vision at
+          Zenblen and researching how AI systems behave outside the demo.
+        </p>
       </div>
 
-      {/* Scroll Indicator */}
-      <motion.div
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-gray-500"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1, duration: 0.6 }}
-      >
-        <motion.p
-          className="text-xs font-light tracking-wide"
-          animate={{ opacity: [0.5, 1, 0.5] }}
-          transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-        >
-          Scroll for more
-        </motion.p>
-        <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-        >
-          <ChevronDown size={20} className="text-gray-500" />
-        </motion.div>
-      </motion.div>
+      <div className="pointer-events-none relative z-10 mx-auto mb-4 flex w-full max-w-6xl items-end px-6 lg:px-8">
+        <p className="font-mono text-[11px] uppercase tracking-widest text-muted">
+          scroll ↓
+        </p>
+      </div>
     </section>
   )
 }

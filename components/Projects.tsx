@@ -1,73 +1,143 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import { ArrowUpRight } from 'lucide-react'
 
-const projects = [
+const PROJECTS = [
   {
-    title: 'Zebrafish Behavior Analysis',
-    problem: 'Understanding how computational methods can extract meaningful patterns from animal behavior data',
-    approach: 'I developed computer vision pipelines using Python, OpenCV, and YOLO to analyze video data of zebrafish behavior, working closely with neuroscience researchers to identify which behaviors matter and how to quantify them',
-    outcome: 'The tools I built enable researchers to ask questions about behavior that weren\'t feasible with manual analysis, showing how computer vision can support biological research',
-    domain: 'Biomedical AI',
+    title: 'How Phrasing Breaks Legal AI',
+    venue: 'ICML AI4Law Workshop ’26 · first author',
+    body: 'Built 1,456 LegalBench triplets across expert, lay, and distressed phrasings to expose answer flips in frontier LLMs.',
+    tags: ['LLM evals', 'Python'],
+    links: [
+      {
+        label: 'Paper',
+        href: 'https://openreview.net/forum?id=A19yIP54jE',
+      },
+      {
+        label: 'GitHub',
+        href: 'https://github.com/JasonL1238/ICML-Workshop',
+      },
+    ],
   },
   {
-    title: 'Social Media Data Analysis',
-    problem: 'Extracting insights from large-scale text data using transformer models',
-    approach: 'I developed NLP models to analyze social media datasets, focusing on how transformer architectures can identify patterns in complex, noisy text data',
-    outcome: 'This work contributed to research published in IEEE, showing how modern NLP methods can be applied to understand large-scale social phenomena',
-    domain: 'NLP Research',
+    title: 'Measuring Text Relatedness Across Platforms',
+    venue: 'IEEE publication · co-author',
+    body: 'Co-authored an embedding and sentiment study spanning 2.6M+ Reddit, YouTube, Twitter, and Amazon records.',
+    tags: ['NLP', 'Transformers'],
+    links: [
+      {
+        label: 'Paper',
+        href: 'https://ieeexplore.ieee.org/document/10421308',
+      },
+    ],
   },
   {
-    title: 'UAV Perception Systems',
-    problem: 'Building reliable perception for autonomous aerial systems',
-    approach: 'I developed computer vision and perception pipelines using ROS2 and PX4, integrating sensor data to enable autonomous navigation in real environments',
-    outcome: 'The systems I built demonstrate how perception, planning, and control can work together in physical systems, with applications to autonomous robotics',
-    domain: 'Robotics & Autonomy',
+    title: 'Cold Emailer',
+    venue: 'Full-stack AI',
+    body: 'Researches companies, drafts personalized outreach, and routes emails through review, Gmail delivery, and follow-up tracking.',
+    tags: ['FastAPI', 'React'],
+    links: [
+      {
+        label: 'GitHub',
+        href: 'https://github.com/JasonL1238/ColdEmailer',
+      },
+    ],
+  },
+  {
+    title: 'Sports Arb',
+    venue: 'Data engineering · personal project',
+    body: 'Normalizes multi-sport odds and screens cross-venue positions after commissions, settlement rules, and available size.',
+    tags: ['Python', 'Pydantic'],
+    links: [
+      {
+        label: 'GitHub',
+        href: 'https://github.com/JasonL1238/SportArbitrage',
+      },
+    ],
+  },
+  {
+    title: 'Poker Trainer',
+    venue: 'Personal project',
+    body: 'A local-first workspace for reconstructing sessions, searching hands, reviewing poker math, and organizing study themes.',
+    tags: ['Python', 'Streamlit'],
+    links: [
+      {
+        label: 'GitHub',
+        href: 'https://github.com/JasonL1238/PokerTrainer',
+      },
+    ],
+  },
+  {
+    title: 'Zebrafish Detection',
+    venue: 'Campbell Lab',
+    body: 'Tracks zebrafish across 28-compartment videos and turns frame-level detections into trajectories and behavioral metrics.',
+    tags: ['OpenCV', 'scikit-image'],
+    links: [
+      {
+        label: 'GitHub',
+        href: 'https://github.com/JasonL1238/FishDetection',
+      },
+    ],
   },
 ]
 
 export default function Projects() {
   return (
-    <section id="projects" className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-gray-800 via-gray-900 to-gray-800">
-      <div className="max-w-7xl mx-auto">
-        <motion.h2
-          className="text-3xl md:text-4xl font-light mb-12 text-center text-white tracking-tight"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.4 }}
-        >
-          Projects
-        </motion.h2>
+    <section id="projects" className="border-b border-line bg-raised/50">
+      <div className="mx-auto max-w-6xl px-6 py-12 sm:py-14 lg:px-8">
+        <p className="font-mono text-xs uppercase tracking-[0.25em] text-accent">
+          Selected work
+        </p>
+        <h2 className="mt-2 max-w-2xl font-display text-3xl leading-snug sm:text-4xl">
+          Research and builds.
+        </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {projects.map((project, index) => (
-            <motion.div
+        <div className="mt-7 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {PROJECTS.map((project, i) => (
+            <motion.article
               key={project.title}
-              className="bg-gray-800/50 border-l-2 border-gray-700 pl-6 py-6 hover:border-gray-600 transition-colors duration-200"
-              initial={{ opacity: 0, y: 20 }}
+              className="group flex flex-col rounded-sm border border-line bg-paper p-5 transition-[border-color,box-shadow,transform] duration-300 hover:-translate-y-1 hover:border-accent hover:shadow-[0_16px_40px_rgba(23,19,12,0.08)] motion-reduce:hover:transform-none"
+              initial={false}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: index * 0.1 }}
+              viewport={{ once: true, margin: '-60px' }}
+              transition={{ duration: 0.45, delay: (i % 3) * 0.08 }}
             >
-              <h3 className="text-lg font-medium text-white mb-2 tracking-tight">{project.title}</h3>
-              <p className="text-xs text-gray-500 mb-4 font-light uppercase tracking-wide">{project.domain}</p>
-              
-              <div className="space-y-4">
-                <div>
-                  <p className="text-xs font-medium text-gray-500 mb-1.5 uppercase tracking-wide">Problem</p>
-                  <p className="text-sm text-gray-400 leading-relaxed font-light">{project.problem}</p>
-                </div>
-                <div>
-                  <p className="text-xs font-medium text-gray-500 mb-1.5 uppercase tracking-wide">Approach</p>
-                  <p className="text-sm text-gray-400 leading-relaxed font-light">{project.approach}</p>
-                </div>
-                <div>
-                  <p className="text-xs font-medium text-gray-500 mb-1.5 uppercase tracking-wide">Outcome</p>
-                  <p className="text-sm text-gray-400 leading-relaxed font-light">{project.outcome}</p>
-                </div>
+              <p className="font-mono text-[11px] uppercase tracking-wider text-muted">
+                {project.venue}
+              </p>
+              <h3 className="mt-2 font-display text-xl leading-snug">
+                {project.title}
+              </h3>
+              <p className="mt-2 flex-1 text-sm leading-relaxed text-muted">
+                {project.body}
+              </p>
+              <div className="mt-3 flex flex-wrap gap-2">
+                {project.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="rounded-full border border-line px-2.5 py-0.5 font-mono text-[10px] text-muted"
+                  >
+                    {tag}
+                  </span>
+                ))}
               </div>
-            </motion.div>
+              <div className="mt-3 flex flex-wrap gap-x-5 gap-y-2 border-t border-line pt-3">
+                {project.links.map((link) => (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-wider text-muted transition-colors hover:text-accent focus-visible:text-accent"
+                  >
+                    {link.label}
+                    <ArrowUpRight size={14} aria-hidden="true" />
+                    <span className="sr-only"> (opens in new tab)</span>
+                  </a>
+                ))}
+              </div>
+            </motion.article>
           ))}
         </div>
       </div>

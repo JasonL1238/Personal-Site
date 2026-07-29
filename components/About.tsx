@@ -1,40 +1,73 @@
 'use client'
 
+import Image from 'next/image'
 import { motion } from 'framer-motion'
 
-const paragraphs = [
-  "I think about computer science as a way to model and understand complex systems. Whether I'm working with biological data, building autonomous systems, or analyzing financial patterns, the core challenge is the same: how do you extract meaningful insights from systems that are inherently messy and interconnected?",
-  "What draws me to real-world applications is that they force you to collaborate. The best computational work happens when you're working alongside domain experts: neuroscientists who understand behavior, clinicians who understand patient needs, or researchers who understand biological mechanisms. These collaborations force you to ask better questions and build tools that actually get used.",
-  "The intersection of CS, biology, data-driven finance, and robotics interests me because these domains all deal with complex, high-stakes systems. In biomedical research, you're working with data that could inform health outcomes. In finance and statistics, you're building models that support decision-making. In robotics, you're bringing algorithms into the physical world—perception, control, and real hardware—which forces you to close the loop between computation and action. All of it requires technical rigor and domain understanding, and benefits from interdisciplinary thinking."
+const FACTS = [
+  { label: 'Studying', value: 'CS + Math, Penn SEAS ’29' },
+  { label: 'Based', value: 'Chicago → Philadelphia' },
+  { label: 'Interested in', value: 'Evals · perception · decisions' },
 ]
 
 export default function About() {
   return (
-    <section id="about" className="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-gray-800 via-gray-900 to-gray-800">
-      <div className="max-w-3xl mx-auto">
-        <motion.h2
-          className="text-3xl md:text-4xl font-light mb-8 text-center text-white tracking-tight"
-          initial={{ opacity: 0, y: 20 }}
+    <section id="about" className="border-b border-line">
+      <div className="mx-auto grid max-w-6xl gap-8 px-6 py-12 sm:py-14 lg:grid-cols-[1fr_280px] lg:gap-12 lg:px-8">
+        <motion.div
+          initial={false}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.4 }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ duration: 0.5 }}
         >
-          About
-        </motion.h2>
+          <p className="font-mono text-xs uppercase tracking-[0.25em] text-accent">
+            About
+          </p>
+          <h2 className="mt-2 font-display text-3xl leading-snug sm:text-4xl">
+            Systems should survive contact with reality.
+          </h2>
+          <div className="mt-4 text-base leading-relaxed text-muted">
+            <p>
+              Markets that shrug off your backtest. Language models that behave
+              perfectly until the phrasing gets emotional. Drones that meet
+              wind. The interesting engineering happens at the gap between the
+              model and reality — that&rsquo;s the gap I like to work in.
+            </p>
+          </div>
 
-        <div className="space-y-5 text-base md:text-lg text-gray-400 leading-relaxed font-light">
-          {paragraphs.map((paragraph, index) => (
-            <motion.p
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: index * 0.1 }}
-            >
-              {paragraph}
-            </motion.p>
-          ))}
-        </div>
+          <dl className="mt-6 grid grid-cols-1 gap-x-6 gap-y-3 sm:grid-cols-3">
+            {FACTS.map((fact) => (
+              <div key={fact.label} className="border-t border-line pt-3">
+                <dt className="font-mono text-[11px] uppercase tracking-wider text-muted">
+                  {fact.label}
+                </dt>
+                <dd className="mt-1 text-sm">{fact.value}</dd>
+              </div>
+            ))}
+          </dl>
+          <p className="mt-5 border-t border-line pt-3 text-sm text-muted">
+            Outside the terminal: poker, Penn Club Tennis, running, cooking,
+            pickup basketball, and the Bulls.
+          </p>
+        </motion.div>
+
+        <motion.div
+          className="relative mx-auto w-56 sm:w-64 lg:mt-2 lg:w-full"
+          initial={false}
+          whileInView={{ opacity: 1, rotate: 2, y: 0 }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+        >
+          <div className="rounded-sm border border-line bg-raised p-2 shadow-[0_12px_40px_rgba(23,19,12,0.08)]">
+            <Image
+              src="/ProfilePic.jpg"
+              alt="Jason Li smiling on a rooftop at night, city lights behind him"
+              width={900}
+              height={1000}
+              sizes="(min-width: 1024px) 420px, 288px"
+              className="w-full rounded-[2px]"
+            />
+          </div>
+        </motion.div>
       </div>
     </section>
   )
